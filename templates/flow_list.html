@@ -1,0 +1,27 @@
+{% extends "base_admin.html" %}
+{% block title %}流程列表{% endblock %}
+{% block active_flow %}active{% endblock %}
+{% block input %}
+    <input type="button" class="btn btn-info btn-fill" name="add-new" onclick="location.href='{% url "new_flow" %}'" value="新建工单流程">
+{% endblock %}
+{% block table %}
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>流程名称(关联工单类型)</th>
+                <th>创建时间</th>
+                <th>流程详情</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ticket_type in ticket_types %}
+        <tr>
+            <td>{{ ticket_type.type_name }}</td>
+            <td>{{ ticket_type.create_time }}</td>
+            <td><a href="{% url "flows_config" ticket_type_id=ticket_type.id %}">详情</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block button %}{% endblock button %}

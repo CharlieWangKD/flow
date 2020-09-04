@@ -1,0 +1,77 @@
+{% extends "ticket_detail.html" %}
+{% block nav_ticket %}active{% endblock nav_ticket %}
+{% block title %}工单审批-{{ ticket.ticket_name }}{% endblock %}
+{% block table1 %}
+    {% if ticket.ticket_status == 2 %}
+        <input type="text" class="form-control suggestion"  name="suggestion" style="width: 500px;" placeholder="处理意见" {{ disable|safe }}>
+    {% endif %}
+{% endblock table1 %}
+{% block table_header %}
+    <h4 class="ticid title" hidden="hidden">{{ ticket.ticket_id }}</h4>
+    <br>
+{% endblock table_header %}
+{% block button %}
+    {% if ticket.ticket_status == 2 %}
+    <div class="butt_r">
+        <input type="button" class="btn btn-info btn-fill submit_approve" value="提交" name="approve" onclick="return confirm('Are you sure? MAN?')"/>
+    </div>
+    <div class="butt_l">
+        <input type="button"  class="btn btn-info btn-fill reject_approve" value="驳回" name="reject" onclick="return confirm('Are you sure? MAN?')"/>
+    </div>
+    {% endif %}
+{% endblock button %}
+{% block self_footer_js %}
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/new_file.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/flow.css"/>
+    {% if ticket.ticket_status == 2 %}
+    <script>
+        $('.submit_approve').click(function () {
+            ticket_id = $('.ticid').text()
+            suggestion = $('.suggestion').val()
+            csrf = $('input[name="csrfmiddlewaretoken"]').val()
+            {#params = {'ticket_id': ticket_id, 'csrfmiddlewaretoken': csrf}#}
+            params = {'ticket_id': ticket_id, 'approve': 0, 'suggestion': suggestion}
+            $.ajax({
+                url: '{% url "ticket_update" %}',
+                type: "put",
+                headers: {"X-CSRFtoken": csrf},
+                data: params,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Status == 0) {
+                        alert(data.Result)
+                        location.reload();
+                    } else {
+                        alert(data.Result)
+                    }
+                }
+            })
+        })
+        $('.reject_approve').click(function () {
+            ticket_id = $('.ticid').text()
+            suggestion = $('.suggestion').val()
+            csrf = $('input[name="csrfmiddlewaretoken"]').val()
+            {#params = {'ticket_id': ticket_id, 'csrfmiddlewaretoken': csrf}#}
+            params = {'ticket_id': ticket_id, 'approve': 1, 'suggestion': suggestion}
+            $.ajax({
+                url: '{% url "ticket_update" %}',
+                type: "put",
+                headers: {"X-CSRFtoken": csrf},
+                data: params,
+                dataType: "json",
+                success: function (data) {
+                    if (data.Status == 0){
+                    alert(data.Result)
+                    location.reload();
+                    }
+                    else {
+                        alert(data.Result)
+                    }
+                }
+            })
+        })
+    </script>
+    {% endif %}
+{% endblock self_footer_js %}

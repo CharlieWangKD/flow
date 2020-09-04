@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Title{% endblock %}
+{% block nav_apply %}active{% endblock %}
+{% block active_apply %}active{% endblock %}
+
+{% block input %}
+    <span class="input-group-addon">Title</span>
+    <input type="text" class="form-control" name="title" required="required" style="width: 500px;" placeholder="TODO" autocomplete="off" {{ disable|safe }}>
+    <input type="text" class="form-control" name="type" required="required" style="width: 150px;" placeholder="TYPE" autocomplete="off">
+{% endblock %}

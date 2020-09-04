@@ -1,0 +1,57 @@
+{% extends "base_ticket.html" %}
+{% block nav_ticket %}active{% endblock nav_ticket %}
+{% block title %}工单详情-{{ ticket.ticket_name }}{% endblock %}
+{% block active_workflow_myticket %}active{% endblock %}
+{% block input %}
+    <h4 class="title">项目：{{ ticket.project }}</h4>
+{% endblock input %}
+{% block table_header %}
+    {% if ticket.ticket_status == 2 %}
+        <h4 class="current_user">当前可审批人：{{ ticket.current_user }}</h4>
+    {% endif %}
+    <h4 class="ticid title" hidden="hidden">{{ ticket.ticket_id }}</h4>
+    <br>
+{% endblock %}
+{% block table %}
+    {% if ticket.ticket_type.type_name == 'type_you_define' %}
+        <p>{{ ticket.ticket_name }}</p>
+    {% endif %}
+{% endblock %}
+{% block button %}
+{% endblock button %}
+{% block table2 %}
+{#    {{ nodes }}#}
+    <div id="tiket_flow">
+    {% if ticket.ticket_status == 2 %}
+        <el-steps :active="{{ ticket.currstatuscount }}" align-center>
+        {% for node in nodes %}
+            {% if node.status.participant %}
+            <el-step title="{{ node.name }}:{{ node.status.participant }}" description="处理意见: {{ node.status.suggestion }}"></el-step>
+            {% else %}
+            <el-step title="{{ node.name }}" description="{{ node.status.suggestion }}"></el-step>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <el-steps :active="{{ nodes | length }}" align-center>
+        {% for node in nodes %}
+        <el-step title="{{ node.node_id.name }}:{{ node.participant }}" description="处理意见: {{ node.suggestion }}"></el-step>
+        {% endfor %}
+    {% endif %}
+        </el-steps>
+    </div>
+{% endblock table2 %}
+
+{% block self_footer_js %}
+    <script>
+    new Vue({
+      el: '#tiket_flow',
+      data: function() {
+        return { visible: false }
+      }
+    })
+    </script>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/new_file.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/flow.css"/>
+{% endblock self_footer_js %}

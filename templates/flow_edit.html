@@ -1,0 +1,58 @@
+{% extends "base_admin.html" %}
+{% block title %}流程配置-{{ ticket_type.type_name }}{% endblock %}
+{% block active_flow %}active{% endblock %}
+{% block input %}
+    <span class="input-group-addon">工单类型</span>
+    <input type="text" class="form-control region" name="ticket_type_name" required="required" style="width: 200px;" placeholder="工单类型" value="{{ ticket_type.type_name }}" disabled="disabled">
+{% endblock input %}
+{% block table_header %}
+    <h4 class="title">工单流程: </h4><br>
+{% endblock table_header %}
+{% block table %}
+    <div class="exp request_input">
+        <datalist id="nodelist">
+            {% for node in nodes %}
+                <option value="{{ node }}">
+            {% endfor %}
+        </datalist>
+        {% for flow in flows %}
+            {% if forloop.counter == 1 %}
+                <div class="input-group">
+                <input type="text" class="form-control rds_type" name="nodes" required="required" style="width: 100px;" placeholder="节点" value="{{ flow.node_id.name }}" readonly="readonly">
+                <input type="button" value="添加" class="add-row btn btn-info btn-fill" onclick="addrow();">
+{#            <input type="button" value="删除" class="del_row btn butt_c">#}
+                </div>
+            {% else %}
+                <div class="input-group">
+                <input type="text" class="form-control rds_type" name="nodes" required="required" list="nodelist" style="width: 100px;" placeholder="节点" value="{{ flow.node_id.name }}" autocomplete="off">
+    {#            <input type="button" value="添加" class="add-row btn btn-info btn-fill" onclick="addrow();">#}
+                <input type="button" value="删除" class="del_row btn butt_c">
+{#            <input type="button" value="删除" class="del_row btn butt_c">#}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $('.request_input').on('click', '.del_row', function () {
+            $(this).parent().remove()
+        })
+
+        $('.request_input').on('blur', '.rds_type', function () {
+            rdstype = $(this).val()
+            $('.meal').attr("list", rdstype)
+            $(this).next().attr("list", rdstype)
+        })
+        function addrow() {
+            var newline = $(
+                '<div class=\"input-group\">\n' +
+                    '<input type=\"text\" class=\"form-control rds_type\" name=\"nodes\" required=\"required\" list=\"nodelist\" style=\"width: 100px;\" placeholder=\"节点\" autocomplete=\"off\">\n' +
+                    {#'<input type=\"button\" value=\"添加\" class=\"add-row btn btn-info btn-fill\" onclick=\"addrow();\">' +#}
+                    '<input type=\"button\" value=\"删除\" class=\"del_row btn butt_c\">\n' +
+                '</div>'
+            );
+            $('.request_input').append(newline);
+        }
+    </script>
+{% endblock script %}

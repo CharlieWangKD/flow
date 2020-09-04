@@ -1,0 +1,62 @@
+{% extends 'pagenation.html' %}
+{% block nav_ticket %}active{% endblock nav_ticket %}
+{% block csrf %}{% endblock csrf %}
+{% block method %}get{% endblock method %}
+{% block input %}
+    <span class="input-group-addon">搜索</span>
+    <input type="text" class="form-control"  name="q" style="width: 500px;" placeholder="请输入关键字">
+{% endblock input %}
+{% block active_workflow_myticket %}
+    {% if ticstatus == 2 %}
+        active
+    {% endif %}
+{% endblock %}
+{% block active_workflow_ticket_done %}
+    {% if ticstatus == 3 %}
+        active
+    {% endif %}
+{% endblock %}
+{% block active_workflow_ticket_rejected %}
+    {% if ticstatus == 4 %}
+        active
+    {% endif %}
+{% endblock %}
+
+
+{% block table %}
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>工单ID</th>
+                <th>申请人</th>
+                <th>工单名称</th>
+                <th>工单类型</th>
+                <th>当前节点</th>
+                <th>工单状态</th>
+                <th>提交时间</th>
+                <th>变更时间</th>
+                <th>工单详情</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tic in allpage %}
+        <tr>
+            <td>{{ tic.ticket_id }}</td>
+            <td>{{ tic.applicant }}</td>
+            <td>{{ tic.ticket_name }}</td>
+            <td>{{ tic.ticket_type }}</td>
+            <td>{{ tic.current_node }}</td>
+            <td>{{ tic.get_ticket_status_display }}</td>
+            <td>{{ tic.create_time }}</td>
+            <td>{{ tic.update_time }}</td>
+            <td><a href="{% url "ticket_detail" ticket_id=tic.ticket_id %}">详情</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block button %}
+    <div class="butt_r">
+        <input type="submit" class="btn btn-info btn-fill" value="提交" {{ disable }}/>
+    </div>
+{% endblock button %}

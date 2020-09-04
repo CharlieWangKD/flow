@@ -1,0 +1,8 @@
+{% extends "base_admin.html" %}
+{% block title %}新建角色{% endblock %}
+{% block active_role %}active{% endblock %}
+
+{% block input %}
+    <span class="input-group-addon">角色名称</span>
+    <input type="text" class="form-control region" name="role_name" required="required" style="width: 200px;" placeholder="角色名称">
+{% endblock input %}

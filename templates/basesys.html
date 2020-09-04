@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>Flow Sys</title>
+
+    <link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+    {% include 'link_css.html' %}
+    {% include 'head_script.html' %}
+    {% block self_head_css_js %} {% endblock %}
+</head>
+
+<body>
+
+    <div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            {% include 'nav_li_profile.html' %}
+            <li id="juser" class="{% block active_role %}{% endblock %}">
+                <a href="{% url "list_roles" %}"><i class="fa fa-user"></i> <span class="nav-label">角色配置</span><span class="fa arrow"></span></a>
+            </li>
+            <li id="juser" class="{% block active_flow %}{% endblock %}">
+                <a href="{% url "list_flows" %}"><i class="fa fa-user"></i> <span class="nav-label">流程配置</span><span class="fa arrow"></span></a>
+            </li>
+            <li id="juser" class="{% block active_admin %}{% endblock %}">
+                <a href="{% url "admin_config" %}"><i class="fa fa-user"></i> <span class="nav-label">管理员配置</span><span class="fa arrow"></span></a>
+            </li>
+            <li id="juser" class="{% block active_all %}{% endblock %}">
+                <a href="{% url 'all_ticket' page=1 %}"><i class="fa fa-user"></i> <span class="nav-label">所有工单</span><span class="fa arrow"></span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+{#    {% block nav %}{% endblock %}#}
+{#        {% include 'newdisplay/nav.html' %}#}
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                {% include 'nav_bar_header.html' %}
+            </div>
+            {% block content %}
+                {% block submit %}
+                    <div class="content">
+                        <form action="{% block action %}{% endblock action %}" method="{% block method %}post{% endblock method %}" name="insert">
+                        {% block csrf %}{% csrf_token %}{% endblock csrf %}
+                        <div class="exp">
+                            <label>
+                                <div id="input-group" class="input-group">
+                                    {% block input %}{% endblock input %}
+                                </div><br>
+                            </label>
+                        </div>
+                        {% block graph %}{% endblock graph %}
+                        <div class="container-fluid">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="header">
+                                        {% block table_header %}{% endblock table_header %}
+                                    </div>
+                                    <div class="content table-responsive table-full-width" {{ hidden }}>
+                                    {% block table %}{% endblock table %}
+                                    </div>
+                                    {% block pages %}{% endblock pages %}
+                                    <div class="butt">
+                                        {% block button %}
+                                            <div class="butt_r">
+                                                <input type="submit" class="btn btn-info btn-fill" value="提交" onclick="return confirm('Are you sure? MAN?')" {{ disable }}/>
+                                            </div>
+                                            <div class="butt_l">
+                                                <input type="reset"  class="btn butt_c" οnclick="formReset()" value="重置">
+                                            </div>
+                                        {% endblock button %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"></label>
+                                <textarea class="form-control" rows="3" disabled="disabled" style="resize: none">{{ data }}</textarea>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                {#</div>#}
+                {% endblock %}
+            {% endblock %}
+
+{#            {% include 'newdisplay/footer.html' %}#}
+        </div>
+    </div>
+
+</body>
+    {% include 'foot_script.html' %}
+    {% block self_footer_js %}
+        <script src="/static/js/new_file.js"></script>
+    {% endblock %}
+</html>

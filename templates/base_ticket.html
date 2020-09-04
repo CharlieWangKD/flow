@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{#<div class="all_r">#}
+    <div class="content">
+        <form action="{% block action %}{% endblock action %}" method="post" name="insert">
+        {% csrf_token %}
+        <div class="exp">
+            <label>
+                <div class="input-group">
+                    {% block input %}{% endblock input %}
+                </div><br>
+            </label>
+        </div>
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        {% block table_header %}{% endblock table_header %}
+                    </div>
+                    <div class="content table-responsive table-full-width" {{ hidden }}>
+                    {% block table %}{% endblock table %}
+                    <br>
+                    {% block table1 %}{% endblock table1 %}
+                    <br>
+                    {% block table2 %}{% endblock table2 %}
+                    </div>
+                    <div class="butt">
+                        {% block button %}
+                            <div class="butt_r">
+                                <input type="submit" class="btn btn-info btn-fill" value="提交" onclick="return confirm('Are you sure? MAN?')" {{ disable }}/>
+                            </div>
+                            <div class="butt_l">
+                                <input type="reset"  class="btn butt_c" οnclick="formReset()" value="重置">
+                            </div>
+                        {% endblock button %}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name"></label>
+                <textarea class="form-control" rows="3" disabled="disabled" style="resize: none">{{ data }}</textarea>
+            </div>
+        </div>
+        </form>
+    </div>
+{#</div>#}
+{% endblock %}
+{% block self_footer_js %}
+{% endblock %}

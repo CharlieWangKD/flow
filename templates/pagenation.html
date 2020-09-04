@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block pages %}
+<div class="word">
+     <ul class="pagination pagination-sm">
+        {% if allpage.has_previous %}
+        <li><a href="{{ allpage.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+            {% for pindex in pages %}
+                {% if pindex == allpage.number %}
+                    <li><a href="">{{ pindex }}</a></li>
+                {% else %}
+                    <li><a href="{{ pindex }}">{{ pindex }}</a></li>
+                {% endif %}
+            {% endfor %}
+                {% if allpage.has_next %}
+                <li><a href="{{ allpage.next_page_number }}">&raquo;</a></li>
+                 {% endif %}
+            </ul>
+        </ul>
+</div>
+{% endblock pages %}
